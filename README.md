@@ -1,1 +1,1 @@
-Blender-Graph-Curbe-Filter
+Blender-Curbe-Filter
