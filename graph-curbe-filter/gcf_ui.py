@@ -63,7 +63,7 @@ class GCF_PT_GraphCurveFilter(bpy.types.Panel):
 
     bl_idname = "GCF_PT_GraphCurveFilter"
     bl_label = "Curbe Filter"
-    bl_space_type = "VIEW_3D"
+    bl_space_type = "GRAPH_EDITOR"
     bl_region_type = "UI"
     bl_category = "Curbe Filter"
 
@@ -77,6 +77,20 @@ class GCF_PT_GraphCurveFilter(bpy.types.Panel):
                 "start \"\" " +
                 "https://github.com/xavier150/Blender-Graph-Curbe-Filter"
                 )
+            return {'FINISHED'}
+
+    class GCF_OT_FilterSet(Operator):
+        bl_label = "My Filter"
+        bl_idname = "object.gcf_filter_set"
+        bl_description = "Clic for filter"
+        filter_name: StringProperty(default="None")
+        use_filter_invert: BoolProperty(default=False)
+
+        def execute(self, context):
+            bpy.context.space_data.dopesheet.filter_text = self.filter_name
+            bpy.context.space_data.dopesheet.use_filter_invert = self.use_filter_invert
+
+            print(self.filter_name)
             return {'FINISHED'}
 
     def draw(self, contex):
@@ -94,10 +108,34 @@ class GCF_PT_GraphCurveFilter(bpy.types.Panel):
         credit_box.label(text=ti('intro')+' Version: '+str(version))
         credit_box.operator("object.gcf_open_documentation_page", icon="HELP")
 
+        def AddFilter(layout, filter_name: str, visual_text: str):
+            new_filter = layout.operator("object.gcf_filter_set", text=visual_text)
+            new_filter.filter_name = filter_name
+
+        filter_group = layout.box()
+        loc_filter = filter_group.row()
+        AddFilter(loc_filter, "Location", "Loc")
+        AddFilter(loc_filter, "X Location", "X")
+        AddFilter(loc_filter, "Y Location", "Y")
+        AddFilter(loc_filter, "Z Location", "Z")
+        euler_filter = filter_group.row()
+        AddFilter(euler_filter, "Euler", "Euler")
+        AddFilter(euler_filter, "X Euler", "X")
+        AddFilter(euler_filter, "Y Euler", "Y")
+        AddFilter(euler_filter, "Z Euler", "Z")
+        scale_filter = filter_group.row()
+        AddFilter(scale_filter, "Scale", "Scale")
+        AddFilter(scale_filter, "X Scale", "X")
+        AddFilter(scale_filter, "Y Scale", "Y")
+        AddFilter(scale_filter, "Z Scale", "Z")
+        all_filter = filter_group.row()
+        AddFilter(all_filter, "", "ALL")
+
 
 classes = (
     GCF_PT_GraphCurveFilter,
     GCF_PT_GraphCurveFilter.GCF_OT_OpenDocumentationPage,
+    GCF_PT_GraphCurveFilter.GCF_OT_FilterSet,
 )
 
 
