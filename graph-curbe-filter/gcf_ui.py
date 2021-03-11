@@ -130,6 +130,7 @@ class GCF_PT_GraphCurveFilter(bpy.types.Panel):
         AddFilter(scale_filter, "Z Scale", "Z")
         all_filter = filter_group.row()
         AddFilter(all_filter, "", "ALL")
+        AddFilter(all_filter, "XOXOXOXOXOXOXO", "NONE")
 
 
 classes = (
