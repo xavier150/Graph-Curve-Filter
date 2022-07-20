@@ -108,29 +108,44 @@ class GCF_PT_GraphCurveFilter(bpy.types.Panel):
         credit_box.label(text=ti('intro')+' Version: '+str(version))
         credit_box.operator("object.gcf_open_documentation_page", icon="HELP")
 
-        def AddFilter(layout, filter_name: str, visual_text: str):
+        def AddFilter(layout, filter_name: str, visual_text: str, full_text: str):
             new_filter = layout.operator("object.gcf_filter_set", text=visual_text)
             new_filter.filter_name = filter_name
 
-        filter_group = layout.box()
-        loc_filter = filter_group.row()
-        AddFilter(loc_filter, "Location", "Loc")
-        AddFilter(loc_filter, "X Location", "X")
-        AddFilter(loc_filter, "Y Location", "Y")
-        AddFilter(loc_filter, "Z Location", "Z")
-        euler_filter = filter_group.row()
-        AddFilter(euler_filter, "Euler", "Euler")
-        AddFilter(euler_filter, "X Euler", "X")
-        AddFilter(euler_filter, "Y Euler", "Y")
-        AddFilter(euler_filter, "Z Euler", "Z")
-        scale_filter = filter_group.row()
-        AddFilter(scale_filter, "Scale", "Scale")
-        AddFilter(scale_filter, "X Scale", "X")
-        AddFilter(scale_filter, "Y Scale", "Y")
-        AddFilter(scale_filter, "Z Scale", "Z")
-        all_filter = filter_group.row()
-        AddFilter(all_filter, "", "ALL")
-        AddFilter(all_filter, "XOXOXOXOXOXOXO", "NONE")
+        filter_group_transform = layout.box()
+
+        loc_filter = filter_group_transform.row()
+        AddFilter(loc_filter, "Location", "Loc", "Location")
+        AddFilter(loc_filter, "X Location", "X", "X Location")
+        AddFilter(loc_filter, "Y Location", "Y", "Y Location")
+        AddFilter(loc_filter, "Z Location", "Z", "Z Location")
+
+        euler_filter = filter_group_transform.row()
+        AddFilter(euler_filter, "Euler", "Euler", "Euler")
+        AddFilter(euler_filter, "X Euler", "X", "X Euler")
+        AddFilter(euler_filter, "Y Euler", "Y", "Y Euler")
+        AddFilter(euler_filter, "Z Euler", "Z", "Z Euler")
+
+        scale_filter = filter_group_transform.row()
+        AddFilter(scale_filter, "Scale", "Scale", "Scale")
+        AddFilter(scale_filter, "X Scale", "X", "X Scale")
+        AddFilter(scale_filter, "Y Scale", "Y", "Y Scale")
+        AddFilter(scale_filter, "Z Scale", "Z", "Z Scale")
+
+        filter_group_quat = layout.box()
+
+        quat_filter = filter_group_quat.row()
+        AddFilter(quat_filter, "Quaternion", "Quat", "Quaternion")
+        AddFilter(quat_filter, "W Quaternion", "W", "W Quaternion")
+        AddFilter(quat_filter, "X Quaternion", "X", "X Quaternion")
+        AddFilter(quat_filter, "Y Quaternion", "Y", "Y Quaternion")
+        AddFilter(quat_filter, "Z Quaternion", "Z", "Z Quaternion")
+
+        filter_group_all = layout.box()
+
+        all_filter = filter_group_all.row()
+        AddFilter(all_filter, "", "ALL", "ALL")
+        AddFilter(all_filter, "XOXOXOXOXOXOXO", "NONE", "NONE")
 
 
 classes = (
