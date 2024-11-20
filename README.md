@@ -1,1 +1,2 @@
-Blender-Curbe-Filter
+Blender Graph Curve Filter
+
