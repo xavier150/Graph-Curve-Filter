@@ -50,18 +50,7 @@ if "bpy" in locals():
     if "gcf_utils" in locals():
         importlib.reload(gcf_utils)
 
-bl_info = {
-    'name': 'Graph Curbe Filter',
-    'description': "This addons allows to easily add filter in graph editor.",
-    'author': 'Loux Xavier (BleuRaven)',
-    'version': (0, 1, 0),
-    'blender': (2, 80, 0),
-    'location': 'View3D > UI > Graph Curve Filter',
-    'warning': '',
-    "wiki_url": "https://github.com/xavier150/Blender-Curbe-Filter",
-    'tracker_url': 'https://github.com/xavier150/Blender-Curbe-Filter/issues',
-    'support': 'COMMUNITY',
-    'category': 'Import-Export'}
+bl_info = {}
 
 classes = (
 )
