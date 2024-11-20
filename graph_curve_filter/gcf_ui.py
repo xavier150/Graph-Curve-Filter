@@ -20,6 +20,7 @@ import os
 import bpy
 import addon_utils
 import time
+from . import bbpl
 
 from . import gcf_basics
 from .gcf_basics import *
@@ -99,14 +100,21 @@ class GCF_PT_GraphCurveFilter(bpy.types.Panel):
         addon_prefs = bpy.context.preferences.addons[__package__].preferences
         layout = self.layout
 
-        version = "-1"
-        for addon in addon_utils.modules():
-            if addon.bl_info['name'] == "Graph Curbe Filter":
-                version = addon.bl_info.get('version', (-1, -1, -1))
+        # Extension details
+        if bpy.app.version >= (4, 2, 0):
+            version_str = 'Version '+ str(bbpl.blender_extension.extension_utils.get_package_version())
+        else:
+            version_str = 'Version '+ bbpl.blender_addon.addon_utils.get_addon_version_str("Unreal Engine Assets Exporter")
 
         credit_box = layout.box()
-        credit_box.label(text=ti('intro')+' Version: '+str(version))
-        credit_box.operator("object.gcf_open_documentation_page", icon="HELP")
+        credit_box.label(text=languages.ti('intro'))
+        credit_box.label(text=version_str)
+        bbpl.blender_layout.layout_doc_button.functions.add_doc_page_operator(
+            layout = layout,
+            url = "https://github.com/xavier150/Blender-For-UnrealEngine-Addons",
+            text = "Open Github page",
+            icon="HELP"
+            )
 
         def AddFilter(layout, filter_name: str, visual_text: str, full_text: str):
             new_filter = layout.operator("object.gcf_filter_set", text=visual_text)
