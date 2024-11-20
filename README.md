@@ -1,4 +1,5 @@
-Blender Graph Curve Filter
+# Graph Curve Filter
+This addons allows to easily add filter in graph editor.
 
 ![image](https://github.com/user-attachments/assets/b8e4595c-2f50-4384-84c0-63cd6b8ba451)
 
