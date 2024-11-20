@@ -1,0 +1,38 @@
+{
+    "schema_version": [1, 0, 0],
+    "blender_manifest": {
+        "id": "graph_curve_filter",
+        "version": [1, 0, 0],
+        "name": "Graph Curve Filter",
+        "tagline": "Easily add filters in the graph editor",
+        "maintainer": "Loux Xavier (BleuRaven) xavierloux.loux@gmail.com",
+
+        "website_url": "https://github.com/xavier150/Graph-Curve-Filter",
+        "report_issue_url": "https://github.com/xavier150/Graph-Curve-Filter/issues",
+        "support": "COMMUNITY",
+
+        "type": "add-on",
+        "tags": ["Animation", "Rigging", "Modeling"],
+        "category": "Animation",
+        "license": ["SPDX:GPL-3.0-or-later"],
+        
+        "copyright": [
+            "2024 Xavier Loux",
+            "2013 Blender Foundation"
+        ],
+                
+        "permissions": {}
+    },
+
+    "builds": {
+        "graph_curve_filter": {
+            "generate_method": "EXTENTION_COMMAND",
+            "auto_install_range": [[4, 2, 0], [4, 3, 0]],
+            "naming": "{Name}-{Version}.zip",
+            "module": "graph_curve_filter",
+            "pkg_id": "graph_curve_filter",
+            "exclude_paths": [],
+            "blender_version_min": [4, 2, 0]
+        }
+    }
+}
