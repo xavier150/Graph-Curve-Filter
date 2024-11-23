@@ -30,6 +30,8 @@ import fnmatch
 import time
 import addon_utils
 
+from . import bpl
+from . import bbpl
 from . import gcf_addon_pref
 from . import gcf_ui
 from . import gcf_basics
@@ -37,14 +39,14 @@ from . import gcf_utils
 
 if "bpy" in locals():
     import importlib
+    if "bpl" in locals():
+        importlib.reload(bpl)
+    if "bbpl" in locals():
+        importlib.reload(bbpl)
     if "gcf_addon_pref" in locals():
         importlib.reload(gcf_addon_pref)
     if "gcf_ui" in locals():
         importlib.reload(gcf_ui)
-    if "gcf_export_asset" in locals():
-        importlib.reload(gcf_export_asset)
-    if "gcf_write_text" in locals():
-        importlib.reload(gcf_write_text)
     if "gcf_basics" in locals():
         importlib.reload(gcf_basics)
     if "gcf_utils" in locals():
@@ -62,6 +64,7 @@ def register():
     for cls in classes:
         register_class(cls)
 
+    bbpl.register()
     gcf_addon_pref.register()
     gcf_ui.register()
 
@@ -74,3 +77,4 @@ def unregister():
 
     gcf_addon_pref.unregister()
     gcf_ui.unregister()
+    bbpl.register()
