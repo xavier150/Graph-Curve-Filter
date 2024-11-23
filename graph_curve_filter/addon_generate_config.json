@@ -2,7 +2,7 @@
     "schema_version": [1, 0, 0],
     "blender_manifest": {
         "id": "graph_curve_filter",
-        "version": [1, 0, 0],
+        "version": [1, 0, 1],
         "name": "Graph Curve Filter",
         "tagline": "Easily add filters in the graph editor",
         "maintainer": "Loux Xavier (BleuRaven) xavierloux.loux@gmail.com",
