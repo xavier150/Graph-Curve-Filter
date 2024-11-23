@@ -77,4 +77,4 @@ def unregister():
 
     gcf_addon_pref.unregister()
     gcf_ui.unregister()
-    bbpl.register()
+    bbpl.unregister()
