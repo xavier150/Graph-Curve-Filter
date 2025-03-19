@@ -77,3 +77,7 @@ def get_object_operator_idname(name):
 def get_scene_operator_idname(name):
     reduced_package_name = get_reduced_package_name()
     return f"scene.bbpl_{reduced_package_name}_{name}"
+
+def get_layout_ui_class_name(name):
+    reduced_package_name = get_reduced_package_name()
+    return f"BBPL_UI_{reduced_package_name}_{name}"

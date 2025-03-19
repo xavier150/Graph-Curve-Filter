@@ -174,10 +174,15 @@ class ProxyCopy_NlaStrip:
 
     def paste_data_on(self, nla_strip: bpy.types.NlaStrip):
 
-        # animated influence need to be set before all.
+        # influence and animated influence need to be set before all.
+        nla_strip.influence = 0.5
+        
+        # I don't know why but when I set use_animated_influence or influence 
+        # it automaticaly add a key in the curve...
+        # This is why I override and not do a simple paste
         nla_strip.use_animated_influence = self.use_animated_influence
         for fcurve in self.fcurves:
-            fcurve.paste_data_on(nla_strip)
+            fcurve.paste_data_on(nla_strip, override=True)
 
         # Auto Blend need to be set before the Blend values.
         if bpy.app.version >= (3, 0, 0):
@@ -224,9 +229,6 @@ class ProxyCopy_NlaStrip:
         # nla_strip.type = self.type  # Read only
 
 
-
-
-
 class ProxyCopy_StripFCurve():
     """
     Proxy class for copying bpy.types.NlaStripFCurves. (NLA Strip only)
@@ -240,15 +242,21 @@ class ProxyCopy_StripFCurve():
         for keyframe_point in fcurve.keyframe_points:
             self.keyframe_points.append(ProxyCopy_Keyframe(keyframe_point))
 
+    def print_stored_keys(self):
+        for key in self.keyframe_points:
+            key.print_stored_key()
 
-    def paste_data_on(self, strips: bpy.types.NlaStrip):
+
+    def paste_data_on(self, strips: bpy.types.NlaStrip, override=False):
+        #Found the corrected curve
         for fcurve in strips.fcurves:
             if self.data_path == "influence" and fcurve.data_path == "influence":
+                if override == True:
+                    fcurve.keyframe_points.clear()
                 # Create the curve with use_animated_influence
                 for key in self.keyframe_points:
                     new_key = fcurve.keyframe_points.insert(frame=key.co[0], value=key.co[1], keyframe_type=key.type)
-                    new_key.interpolation = key.interpolation
-
+                    key.paste_data_on(new_key)
 
 
 class ProxyCopy_FCurve():
@@ -268,7 +276,7 @@ class ProxyCopy_FCurve():
         fcurve.data_path = self.data_path
         for key in self.keyframe_points:
             new_key = fcurve.keyframe_points.insert(frame=key.co[0], value=key.co[1], keyframe_type=key.type)
-            new_key.interpolation = key.interpolation
+            key.paste_data_on(new_key)
 
 
 class ProxyCopy_Keyframe():
@@ -279,14 +287,33 @@ class ProxyCopy_Keyframe():
     """
 
     def __init__(self, keyframe: bpy.types.Keyframe):
-        self.co = keyframe.co
+        self.co = keyframe.co.copy()
         self.type = keyframe.type
         self.interpolation = keyframe.interpolation
+        self.handle_left = keyframe.handle_left.copy()
+        self.handle_left_type = keyframe.handle_left_type
+        self.handle_right = keyframe.handle_right.copy()
+        self.handle_right_type = keyframe.handle_right_type
+        self.select_control_point = keyframe.select_control_point
+        self.select_left_handle = keyframe.select_left_handle
+        self.select_right_handle = keyframe.select_right_handle
+        
+
+    def print_stored_key(self):
+        print(self.co, self.type, self.interpolation)
 
     def paste_data_on(self, keyframe: bpy.types.Keyframe):
         keyframe.co = self.co
         keyframe.type = self.type
         keyframe.interpolation = self.interpolation
+        keyframe.handle_left = self.handle_left
+        keyframe.handle_left_type = self.handle_left_type
+        keyframe.handle_right = self.handle_right
+        keyframe.handle_right_type = self.handle_right_type
+        keyframe.select_control_point = self.select_control_point
+        keyframe.select_left_handle = self.select_left_handle
+        keyframe.select_right_handle = self.select_right_handle
+
 
 
 
@@ -340,13 +367,6 @@ def copy_modifier_attr(a :bpy.types.FModifierGenerator, b :bpy.types.FModifierGe
     ]
     copy_attributes(a, b, priority_vars, ignore_list, print_fails)
 
-def copy_keyframepoints_attr(a :bpy.types.FCurveKeyframePoints, b :bpy.types.FCurveKeyframePoints, print_fails = True):
-    if not isinstance(a, bpy.types.FCurveKeyframePoints) or not isinstance(b, bpy.types.FCurveKeyframePoints):
-        raise TypeError(f"Expected 'bpy.types.FCurveKeyframePoints', but got {type(a).__name__} and {type(b).__name__}")
-    priority_vars = []
-    ignore_list = []
-    copy_attributes(a, b, priority_vars, ignore_list, print_fails)
-
 def copy_driver_attr(a: bpy.types.Driver, b: bpy.types.Driver, print_fails = True):
     if not isinstance(a, bpy.types.Driver) or not isinstance(b, bpy.types.Driver):
         raise TypeError(f"Expected 'bpy.types.Driver', but got {type(a).__name__} and {type(b).__name__}")
@@ -383,8 +403,6 @@ def copy_drivervariable_attr(a: bpy.types.DriverVariable, b: bpy.types.DriverVar
         "id_type",
     ]
     copy_attributes(a, b, priority_vars, ignore_list, print_fails)
-
-
 
 def copy_drivers(src: bpy.types.Object, dst: bpy.types.Object):
     print_fails = False
@@ -425,15 +443,9 @@ def copy_drivers(src: bpy.types.Object, dst: bpy.types.Object):
                     if v2.targets[i].id == src:
                         v2.targets[i].id = dst
 
-            # Copy key frames
-            try:
-                for i in range(len(d1.keyframe_points)):
-                    d2.keyframe_points.add()
-                    k1 = d1.keyframe_points[i]
-                    k2 = d2.keyframe_points[i]
-                    copy_keyframepoints_attr(k1, k2, print_fails)
-            except TypeError:
-                pass
+            # Copy keyframes
+            copy_fcurve = ProxyCopy_FCurve(d1)
+            copy_fcurve.paste_data_on(d2)
 
 
 class AnimationManagment():
