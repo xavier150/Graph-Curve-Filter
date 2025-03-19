@@ -27,7 +27,7 @@
     "builds": {
         "graph_curve_filter": {
             "generate_method": "EXTENTION_COMMAND",
-            "auto_install_range": [[4, 2, 0], [4, 3, 0]],
+            "auto_install_range": [[4, 2, 0], "LATEST"],
             "naming": "{Name}-{Version}.zip",
             "module": "graph_curve_filter",
             "pkg_id": "graph_curve_filter",
