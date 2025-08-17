@@ -28,6 +28,7 @@ from . import layout_accordion
 from . import layout_template_list
 from . import layout_doc_button
 from . import layout_selector
+from . import layout_utils
 
 if "layout_accordion" in locals():
     importlib.reload(layout_accordion)
@@ -37,7 +38,8 @@ if "layout_doc_button" in locals():
     importlib.reload(layout_doc_button)
 if "layout_selector" in locals():
     importlib.reload(layout_selector)
-
+if "layout_utils" in locals():
+    importlib.reload(layout_utils)
 
 
 classes = (
@@ -47,7 +49,7 @@ classes = (
 
 def register():
     for cls in classes:
-        bpy.utils.register_class(cls)
+        bpy.utils.register_class(cls)  # type: ignore
 
     layout_accordion.register()
     layout_template_list.register()
@@ -56,7 +58,7 @@ def register():
 
 def unregister():
     for cls in reversed(classes):
-        bpy.utils.unregister_class(cls)
+        bpy.utils.unregister_class(cls)  # type: ignore
 
     layout_selector.unregister()
     layout_doc_button.unregister()
