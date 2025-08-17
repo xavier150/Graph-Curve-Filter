@@ -17,31 +17,20 @@
 # ======================= END GPL LICENSE BLOCK =============================
 
 # ----------------------------------------------
-#  BPL -> BleuRaven Python Library
-#  https://github.com/xavier150/BPL
+#  BBAM -> BleuRaven Blender Addon Manager
+#  https://github.com/xavier150/BBAM
 #  BleuRaven.fr
 #  XavierLoux.com
 # ----------------------------------------------
 
 import importlib
 
-from . import advprint
-from . import console_utils
-from . import utils
-from . import math
-from . import color_set
-from . import naming
+from . import bbam_addon_config_type
+from . import bbam_addon_config_utils
 
-if "advprint" in locals():
-    importlib.reload(advprint)
-if "console_utils" in locals():
-    importlib.reload(console_utils)
-if "utils" in locals():
-    importlib.reload(utils)
-if "math" in locals():
-    importlib.reload(math)
-if "color_set" in locals():
-    importlib.reload(color_set)
-if "naming" in locals():
-    importlib.reload(naming)
+# Reloading modules if they're already loaded
+if "bbam_addon_config_type" in locals():
+    importlib.reload(bbam_addon_config_type)
+if "bbam_addon_config_utils" in locals():
+    importlib.reload(bbam_addon_config_utils)
 
