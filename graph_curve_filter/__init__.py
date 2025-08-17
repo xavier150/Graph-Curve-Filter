@@ -15,57 +15,78 @@ xavierloux.com
 xavierloux.loux@gmail.com
 '''
 
-import os
-import bpy
-import fnmatch
-import time
-import addon_utils
-
-from . import bpl
-from . import bbpl
-from . import gcf_addon_pref
-from . import gcf_ui
-from . import gcf_basics
-from . import gcf_utils
-
-if "bpy" in locals():
+try:
+    import bpy
     import importlib
-    if "bpl" in locals():
-        importlib.reload(bpl)
-    if "bbpl" in locals():
-        importlib.reload(bbpl)
-    if "gcf_addon_pref" in locals():
-        importlib.reload(gcf_addon_pref)
-    if "gcf_ui" in locals():
-        importlib.reload(gcf_ui)
-    if "gcf_basics" in locals():
-        importlib.reload(gcf_basics)
-    if "gcf_utils" in locals():
-        importlib.reload(gcf_utils)
+    from . import bpl
+    from . import bbpl
+    from . import gcf_addon_pref
+    from . import gcf_ui
+    from . import gcf_basics
+    from . import gcf_utils
 
-bl_info = {}
+    if "bpy" in locals():
+        import importlib
+        if "bpl" in locals():
+            importlib.reload(bpl)
+        if "bbpl" in locals():
+            importlib.reload(bbpl)
+        if "gcf_addon_pref" in locals():
+            importlib.reload(gcf_addon_pref)
+        if "gcf_ui" in locals():
+            importlib.reload(gcf_ui)
+        if "gcf_basics" in locals():
+            importlib.reload(gcf_basics)
+        if "gcf_utils" in locals():
+            importlib.reload(gcf_utils)
 
-classes = (
-)
+    bl_info = {}
 
-
-def register():
-    from bpy.utils import register_class
-
-    for cls in classes:
-        register_class(cls)
-
-    bbpl.register()
-    gcf_addon_pref.register()
-    gcf_ui.register()
+    classes = (
+    )
 
 
-def unregister():
-    from bpy.utils import unregister_class
+    def register():
+        try:
+            from bpy.utils import register_class
 
-    for cls in classes:
-        unregister_class(cls)
+            for cls in classes:
+                register_class(cls)
 
-    gcf_addon_pref.unregister()
-    gcf_ui.unregister()
-    bbpl.unregister()
+            bbpl.register()
+            gcf_addon_pref.register()
+            gcf_ui.register()
+
+        except Exception as _:
+            import traceback
+            print("Failed to register addon:")
+            print("\033[91m" + "---------------------------------" + "\033[0m")
+            traceback.print_exc()
+            print("\033[91m" + "---------------------------------" + "\033[0m")
+
+
+    def unregister():
+        try:
+            from bpy.utils import unregister_class
+
+            for cls in classes:
+                unregister_class(cls)
+
+            gcf_addon_pref.unregister()
+            gcf_ui.unregister()
+            bbpl.unregister()
+        except Exception as _:
+            import traceback
+            print("Failed to unregister addon:")
+            print("\033[91m" + "---------------------------------" + "\033[0m")
+            traceback.print_exc()
+            print("\033[91m" + "---------------------------------" + "\033[0m")
+
+
+
+except Exception as _:
+    import traceback
+    print("Failed to import addon modules:")
+    print("\033[91m" + "---------------------------------" + "\033[0m")
+    traceback.print_exc()
+    print("\033[91m" + "---------------------------------" + "\033[0m")
