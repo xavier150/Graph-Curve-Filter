@@ -1,3 +1,12 @@
+# SPDX-FileCopyrightText: 2021-2025 Xavier Loux (BleuRaven)
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
+# ----------------------------------------------
+#  Graph Curve Filter
+#  https://github.com/xavier150/Graph-Curve-Filter
+# ----------------------------------------------
+
 import bpy
 import json
 import os
